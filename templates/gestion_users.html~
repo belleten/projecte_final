@@ -10,7 +10,5 @@
        <li><a href="/delete_user">Delete users</a></li>
        <li><a href="/update_user">Update users</a></li>
      </ul>
-	<br>
-	<a href="/">landing page</a>
   </body>
 </html>

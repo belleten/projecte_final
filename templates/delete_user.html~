@@ -1,0 +1,16 @@
+<body>
+<head>
+<title>Delete user</title>
+<body>
+	<form>
+	<fieldset>
+		<legend>Delete User</legend>
+		User_id:<br>
+		<input type="text" name="user_id"><br>
+		<br><br>
+		<input type="submit" name="submit">
+	</fieldset>
+	</form>
+</body>
+</head>
+</body>

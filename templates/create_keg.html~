@@ -1,0 +1,17 @@
+<html>
+<head>
+<title>Create keg</title>
+<body>
+	<form>
+	<fieldset>
+		<legend>Create keg</legend>
+		keg_id:<br>
+		<input type="text" name="keg_id"><br>
+		<br><br>
+		<input type="submit" name="submit">
+	</fieldset>
+	</form>
+	<a href="/">landing page</a>
+</body>
+</head>
+</html>

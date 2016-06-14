@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Update user</title>
+<body>
+	<form>
+	<fieldset>
+		<legend>Enter ID of the desired user to update</legend>
+		Username:<br>
+		<input type="text" name="user_id"><br>
+	</fieldset>
+	<fieldset>
+		<legend>Update User</legend>
+		Username:<br>
+		<input type="text" name="username"><br>
+		Real Name:<br>
+		<input type="text" name="real_name"><br>
+		Email:<br>
+		<input type="text" name="email"><br>
+		<br><br>
+		<input type="submit" name="submit">
+	</fieldset>
+	</form>
+	<br>
+	<a href="/">landing page</a>
+</body>
+</head>
+</html>

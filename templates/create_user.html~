@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Create user</title>
+<body>
+	<form>
+	<fieldset>
+		<legend>Create User</legend>
+		Username:<br>
+		<input type="text" name="username"><br>
+		Real Name:<br>
+		<input type="text" name="real_name"><br>
+		Email:<br>
+		<input type="text" name="email"><br>
+		<br><br>
+		<input type="submit" name="submit">
+	</fieldset>
+	</form>
+	<a href="/">landing page</a>
+</body>
+</head>
+</html>
