@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>App - Read kegs</title>
+<body>
+	<table border=1>
+	<tr>
+		<td>Keg ID</td>
+		<td>Amount</td>
+	</tr>
+	{% for row in kegs %}
+	<tr>
+		{% for cell in row %}
+		<td>{{cell}}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+
+	</table>
+	<br>
+	<a href="/">landing page</a>
+</body>
+</head>
+</html>

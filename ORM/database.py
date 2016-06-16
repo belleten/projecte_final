@@ -1,6 +1,7 @@
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import create_engine
 
 Base = declarative_base()
 
@@ -32,10 +33,8 @@ class Keg(Base):
         return "keg(kegid='%s', amount='%f')>" % (
                              self.kegid,self.amount)
 
-
-
-
-from sqlalchemy import create_engine
-path_to_db = "ORM/mydatabase.db"
-engine = create_engine('sqlite:///' + path_to_db)
+engine = create_engine('sqlite:///ORM/mydatabase.db')
 Base.metadata.create_all(engine)
+
+
+
