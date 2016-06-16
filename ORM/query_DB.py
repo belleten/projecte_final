@@ -37,6 +37,10 @@ def get_all_users():
     data = [row for row in session.query(User.username, User.user_id, User.email, User.real_name, User.amount)]
     return data
 
+def get_user(user_id):
+    user = [session.query(User.username, User.user_id, User.email, User.real_name, User.amount).filter_by(user_id=user_id).one()]
+    return user
+
 #queries for kegs-----------------------------------------------------
 
 
@@ -51,8 +55,11 @@ def create_keg(keg_id, amount):
 
 def get_all_kegs():
     data = [row for row in session.query(Keg.kegid, Keg.amount)]
-    print data
     return data
+
+def get_keg(keg_id):
+    keg = [session.query(Keg.kegid, Keg.amount).filter_by(kegid=keg_id).one()]
+    return keg
 
 def update_keg(given_keg_id, amount):
     keg_to_update = session.query(Keg).filter_by(kegid=given_keg_id).one()

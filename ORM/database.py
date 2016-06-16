@@ -20,6 +20,16 @@ class User(Base):
         return "<user(username='%s', user_id='%s' ,real_name='%s', email='%s', amount='%f' )>" % (
                              self.username, self.user_id, self.real_name, self.email,self.amount)
 
+     def __json__ (self):
+        dict_user ={}
+        dict_user["id"] = self.id
+        dict_user["username"] = self.username
+        dict_user["user_id"] = self.user_id
+        dict_user["realname"] = self.real_name
+        dict_user["email"] = self.email
+        dict_user["amount"] = self.amount
+        return dict_user
+
 
 class Keg(Base):
      __tablename__ = 'keg'
@@ -32,6 +42,15 @@ class Keg(Base):
      def __repr__(self):
         return "keg(kegid='%s', amount='%f')>" % (
                              self.kegid,self.amount)
+
+     def __json__ (self):
+        dict_keg ={}
+        dict_keg["id"] = self.id
+        dict_keg["kegid"] = self.kegid
+        dict_keg["amount"] = self.amount
+        return dict_keg
+
+
 
 engine = create_engine('sqlite:///ORM/mydatabase.db')
 Base.metadata.create_all(engine)
