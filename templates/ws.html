@@ -1,12 +1,72 @@
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(243,197,69,1);
+    position: top;
+}
+
+li {
+    float: left;
+    border-right: 1px solid #bbb;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: rgba(250,220,100,1);
+}
+
+li:last-child {
+    border-right: none;
+}
+.title{
+    background-color: rgba(243,197,69,0.7);
+    border-style: solid;
+    border-width: 5px;
+    border-color: white;
+    margin: 10px;
+    text-align: center;
+
+}
+
+.fondo{
+    margin:10px;
+    height: 500px;
+    background-image: url("/static/back.jpg");
+    padding: 20px;
+}
+.footer{
+    background-color: rgba(243,197,69,1);
+    margin:0px;
+    height: 100px;
+}
+body{
+    background-color: rgba(255,255,200,1);
+}
+</style>
 <html>
   <head>
     <title>Web Service</title>
   </head>
   <body>
-    <h1>Web service</h1>
-    <br>
     <ul>    
-
+	<li><a href="/App">Web App</a></li>
+	<li><a href="/WS">Web Service</a></li>
+	<li><a href="/">Landing page</a></li>
+    </ul>
+    <div class="title"><h1>Web service</h1></div>
+    <br>   
+    <div class="fondo">
+    <div class="title">
 	<h3>Using the web service:</h3>
 	<p>
 	<b>To work with the users table</b><br><br>
@@ -27,7 +87,13 @@
 	To read one keg:  ...WS/keg/one/username<br>
 	</p>
 	<br>
-	<li><a href="/">landing page</a></li>
-    </ul>
+	</div>
+	</div>
+    </div>
+    <div class=footer>
+    <br>
+    <center>Version 0.01<br>
+    Drinking beer monitoring software</center>
+    </div>
   </body>
 </html>

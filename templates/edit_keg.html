@@ -1,11 +1,80 @@
+<style>
+ul {
+    list-style-type: none;
+    margin: 20px;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(243,197,69,0.7);
+    position: top;
+}
+
+li {
+    border-right: 1px solid #bbb;
+}
+.menu{
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: rgba(250,220,100,1);
+}
+
+li:last-child {
+    border-right: none;
+}
+.title{
+    background-color: rgba(243,197,69,0.7);
+    border-style: solid;
+    border-width: 5px;
+    border-color: white;
+    margin: 10px;
+    text-align: center;
+    padding: 10px;
+    position: center;
+
+}
+
+.fondo{
+    margin:10px;
+    height: 700px;
+    width: 600px;
+    background-image: url("/static/back_big.jpg");
+    background-repeat: no-repeat;
+    padding: 20px;
+    position: center; 
+}
+.footer{
+    background-color: rgba(243,197,69,1);
+    margin:0px;
+    height: 100px;
+}
+body{
+    background-color: rgba(255,255,200,1);
+}
+</style>
 <html>
 <head>
 <title>Web app - Edit user</title>
 <body>
-
+    <ul>    
+	<li class="menu"><a href="/App">Web App</a></li>
+	<li class="menu"><a href="/WS">Web Service</a></li>
+        <li class="menu"><a href="/">landing page</a></li>
+    </ul>
+    <center><div class="fondo">
+    <div class="title"><h1>keg number {{keg_id}} area</h1></div>
+    <div class="title">
 	<fieldset>
 		<legend>Current keg</legend>
-	<table border=1>
+	<center><table border=1>
 	<tr>
 		<td>Keg ID</td>
 		<td>amount</td>
@@ -18,7 +87,7 @@
 		{% endfor %}
 	</tr>
 	{% endfor %}
-	</table>
+	</table></center>
 	<br>
 	</fieldset>
 	<form action="/App/delete_keg" method="post">
@@ -39,8 +108,17 @@
 		<input type="submit" value="Update keg {{keg_id}}" name="original_id">
 	</fieldset>
 	</form>
-	<br>
-	<a href="/">landing page</a>
+	<ul>
+	<li><a href="/App/edit_keg">Back</a></li>
+	</ul>
+	</div>
+	</div></center>
+    </div>
+    <div class=footer>
+    <br>
+    <center>Version 0.01<br>
+    Drinking beer monitoring software</center>
+    </div>
 </body>
 </head>
 </html>
