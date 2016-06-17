@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Web app - Edit user</title>
+<body>
+
+	<fieldset>
+		<legend>Current keg</legend>
+	<table border=1>
+	<tr>
+		<td>Keg ID</td>
+		<td>amount</td>
+
+	</tr>
+        {% for row in keg %}
+	<tr>
+		{% for cell in row %}
+		<td>{{cell}}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	</table>
+	<br>
+	</fieldset>
+	<form action="/App/delete_keg" method="post">
+	<fieldset>
+		<legend>Delete Keg</legend>
+		<br>
+		<input type="submit" value="delete keg {{keg_id}}" name="keg_id" >
+	</fieldset>
+	</form>
+	<form action="/App/update_keg" method="post">
+	<fieldset>
+		<legend>Update keg</legend>
+		keg ID:<br>
+		<input type="text" name="keg_id"><br>
+		Amount:<br>
+		<input type="text" name="amount"><br>
+		<br><br>
+		<input type="submit" value="Update keg {{keg_id}}" name="original_id">
+	</fieldset>
+	</form>
+	<br>
+	<a href="/">landing page</a>
+</body>
+</head>
+</html>

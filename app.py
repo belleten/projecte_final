@@ -49,10 +49,10 @@ def bad_request(error):
 
 #------------------CRUD WS USERS-------------------------------------
 
-@app.route('/WS/user/one/<int:user_id>', methods=['GET'])
-def get_user_one(user_id):
+@app.route('/WS/user/one/<username>', methods=['GET'])
+def get_user_one(username):
     try:
-        user_query = session.query(User).filter_by(user_id=user_id).one()
+        user_query = session.query(User).filter_by(username=username).one()
         session.commit()
     except:
         abort(404)
@@ -74,11 +74,13 @@ def get_user_all():
 
 @app.route('/WS/user', methods=['POST'])
 def create_user_ws():
-    if not request.json or not 'username' in request.json or not 'user_id' in request.json or not 'real_name' in request.json or not 'email' in request.json or not 'amount' in request.json:
+    if not request.json or not 'username' in request.json or not 'user_id' in request.json or not 'realname' in request.json or not 'email' in request.json or not 'amount' in request.json:
+        abort(400)
+    if ORM.query_DB.user_exist(request.json['username']):
         abort(400)
     new_user = User(username=request.json['username'],
                     user_id=request.json['user_id'],
-                    real_name=request.json['real_name'],
+                    real_name=request.json['realname'],
                     email=request.json['email'],
                     amount=request.json['amount']) 
 
@@ -87,41 +89,41 @@ def create_user_ws():
     return jsonify(id=new_user.id,
                    username=new_user.username,
                    user_id=new_user.user_id,
-                   real_name=new_user.real_name,
+                   realname=new_user.real_name,
                    email=new_user.email,
                    amount=new_user.amount), 201
 
-@app.route('/WS/user/<int:user_id>', methods=['PUT'])
-def update_user_ws(user_id):
+@app.route('/WS/user/<username>', methods=['PUT'])
+def update_user_ws(username):
     try:
-        user_query = session.query(User).one()
+        user_query = session.query(User).filter_by(username=username).one()
         session.commit()
     except:
         abort(404)
     if not request.json:
         abort(400)
-    user_query.username = request.json.get['username']
-    user_query.user_id = request.json.get['user_id']
-    user_query.real_name = request.json.get['real_name']
-    user_query.email = request.json.get['email']
-    user_query.amount = request.json.get['amount']
+    user_query.username = request.json['username']
+    user_query.user_id = request.json['user_id']
+    user_query.real_name = request.json['realname']
+    user_query.email = request.json['email']
+    user_query.amount = request.json['amount']
     session.commit()
-    return jsonify(id=user.id,
+    return jsonify(id=user_query.id,
                    username=user_query.username,
                    user_id=user_query.user_id,
-                   real_name=user_query.real_name,
+                   realname=user_query.real_name,
                    email=user_query.email,
                    amount=user_query.amount), 201
 
-@app.route('/WS/user/<int:user_id>', methods=['DELETE'])
-def delete_user_ws(user_id):
+@app.route('/WS/user/<username>', methods=['DELETE'])
+def delete_user_ws(username):
     try:
-        user_query = session.query(User).filter_by(user_id=user_id).one()
+        user_query = session.query(User).filter_by(username=username).one()
     except:
         abort(404)
     session.delete(user_query)
     session.commit()
-    return jsonify(id=user.id,
+    return jsonify(id=user_query.id,
                    username=user_query.username,
                    user_id=user_query.user_id,
                    real_name=user_query.real_name,
@@ -140,8 +142,23 @@ def create_user():
         real_name= request.form.get('real_name')
         email= request.form.get('email')
         user_id="1"
-        ORM.query_DB.create_user(username,user_id,real_name, email)
-	return render_template('succes.html')
+        succes=ORM.query_DB.create_user(username,user_id,real_name, email)
+        if succes==True:
+	    return render_template('succes.html')
+        elif succes==False:
+            return render_template('error.html', var="already exists")
+
+@app.route('/App/edit_user',methods=['POST','GET'])
+def edit_users():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        username= request.form.get('username')
+        try:
+            user = ORM.query_DB.get_user(username)
+            return render_template('edit_user.html',user=user, username=username)
+        except:
+            return render_template('error.html', var="user not found")            
 
 @app.route('/App/read_users')
 def read_users():
@@ -153,34 +170,34 @@ def read_user():
     if request.method == 'GET':
         return render_template('read_user_form.html')
     elif request.method == 'POST':
-        user_id= request.form.get('user_id')
-        users = ORM.query_DB.get_user(user_id)
-        print users
-        return render_template('read_user.html',users=users)
-
-@app.route('/App/delete_user',methods=['POST','GET'])
-def delete_user():
-    if request.method == 'GET':
-        return render_template('delete_user.html')
-    elif request.method == 'POST':
-        user_id= request.form.get('user_id')
-        ORM.query_DB.delete_user(user_id)
-	return render_template('succes.html')
-
-@app.route('/App/update_user',methods=['POST','GET'])
-def update_user():
-    if request.method == 'GET':
-        return render_template('update_user.html')
-    elif request.method == 'POST':
         username= request.form.get('username')
-        real_name= request.form.get('real_name')
-        email= request.form.get('email')
-        amount= request.form.get('amount')
-        user_id= request.form.get('user_id')
-        ORM.query_DB.update_user(username,user_id,real_name,email,amount)
-	return render_template('succes.html')
+        try:
+            users = ORM.query_DB.get_user(username)
+            return render_template('read_user.html',users=users)
+        except:
+            return render_template('error.html', var="user not found") 
 
-#------------------CRUD WS USERS-------------------------------------
+@app.route('/App/delete_user',methods=['POST'])
+def delete_user():
+    (word,username)= request.form.get('username').split(' ')
+    try:
+        ORM.query_DB.delete_user(username)
+        return render_template('succes.html')
+    except:
+        return render_template('error',var="not a user")
+
+@app.route('/App/update_user',methods=['POST'])
+def update_user():
+    username= request.form.get('username')
+    real_name= request.form.get('real_name')
+    email= request.form.get('email')
+    amount= request.form.get('amount')
+    user_id= request.form.get('user_id')
+    (word,original_username)= request.form.get('original_username').split(' ')
+    ORM.query_DB.update_user(original_username,username,user_id,real_name,email,amount)
+    return render_template('succes.html')
+
+#------------------CRUD WS KEGS-------------------------------------
 
 @app.route('/WS/keg/one/<int:keg_id>', methods=['GET'])
 def get_keg_one(keg_id):
@@ -202,36 +219,40 @@ def get_keg_all():
         abort(404)
     return jsonify({'kegs': kegs}), 201
 
+
 @app.route('/WS/keg', methods=['POST'])
 def create_keg_ws():
     if not request.json or not 'kegid' in request.json or not 'amount' in request.json:
         abort(400)
-    new_keg = Keg(kegid=request.json['keg_id'],
+    if ORM.query_DB.keg_exist(request.json['kegid']):
+        abort(400)
+    try:
+        new_keg = Keg(kegid=request.json['kegid'],
                     amount=request.json['amount']) 
-
-    session.add(new_keg)
-    session.commit()
+        session.add(new_keg)
+        session.commit()
+    except:
+        abort(404)
     return jsonify(id=new_keg.id,
                    keg_id=new_keg.kegid,
                    amount=new_keg.amount), 201
 
-@app.route('/WS/keg/<int:keg_id>', methods=['PUT'])
-def update_keg_ws(user_id):
+@app.route('/WS/keg/<keg_id>', methods=['PUT'])
+def update_keg_ws(keg_id):
+
     try:
-        keg_query = session.query(Keg).one()
+        keg_query = session.query(Keg).filter_by(kegid=keg_id).one()
+        keg_query.kegid = request.json['kegid']
+        keg_query.amount = request.json['amount']
+        session.add(keg_query)
         session.commit()
     except:
         abort(404)
+
     if not request.json:
         abort(400)
-    keg_query.username = request.json.get['username']
-    keg_query.user_id = request.json.get['user_id']
-    keg_query.real_name = request.json.get['real_name']
-    keg_query.email = request.json.get['email']
-    keg_query.amount = request.json.get['amount']
-    session.commit()
     return jsonify(id=keg_query.id,
-                   keg_id=keg_query.kegid,
+                   kegid=keg_query.kegid,
                    amount=keg_query.amount), 201
 
 @app.route('/WS/keg/<int:keg_id>', methods=['DELETE'])
@@ -255,17 +276,32 @@ def create_keg():
     elif request.method == 'POST':
         keg_id=request.form.get('keg_id')
         amount=request.form.get('amount')
-        ORM.query_DB.create_keg(keg_id,amount)
-	return render_template('succes.html')
+        succes = ORM.query_DB.create_keg(keg_id,amount)
+        if succes==True:
+	    return render_template('succes.html')
+        elif succes==False:
+            return render_template('error.html', var="keg already exists")
 
 @app.route('/App/delete_keg',methods=['POST','GET'])
 def delete_keg():
     if request.method == 'GET':
         return render_template('delete_keg.html')
     elif request.method == 'POST':
-        keg_id=request.form.get('keg_id')
+        (word1,word2,keg_id)= request.form.get('keg_id').split(' ')
         ORM.query_DB.delete_keg(keg_id)
 	return render_template('succes.html')
+
+@app.route('/App/edit_keg',methods=['POST','GET'])
+def edit_kegs():
+    if request.method == 'GET':
+        return render_template('login_keg.html')
+    elif request.method == 'POST':
+        keg_id= request.form.get('keg_id')
+        try:
+            keg = ORM.query_DB.get_keg(keg_id)
+            return render_template('edit_keg.html',keg=keg, keg_id=keg_id)
+        except:
+            return render_template('error.html', var="keg not found") 
 
 @app.route('/App/update_keg',methods=['POST','GET'])
 def update_keg():
@@ -274,7 +310,8 @@ def update_keg():
     elif request.method == 'POST':
         keg_id= request.form.get('keg_id')
         amount= request.form.get('amount')
-        ORM.query_DB.update_keg(keg_id,amount)
+        (word1,word2,original_id) = request.form.get('original_id').split(' ')
+        ORM.query_DB.update_keg(original_id,keg_id,amount)
 	return render_template('succes.html')
 
 @app.route('/App/read_kegs')
@@ -288,8 +325,11 @@ def read_keg():
         return render_template('read_keg_form.html')
     elif request.method == 'POST':
         keg_id= request.form.get('keg_id')
-        keg = ORM.query_DB.get_keg(keg_id)
-        return render_template('read_keg.html',keg=keg)
+        try:
+            keg = ORM.query_DB.get_keg(keg_id)
+            return render_template('read_keg.html',keg=keg)
+        except:
+            return render_template('error.html', var="keg not found") 
 
 if __name__=="__main__":
     app.debug = True

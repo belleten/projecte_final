@@ -1,20 +1,22 @@
 <html>
 <head>
-<title>App - Read users</title>
+<title>Web app - Read users</title>
 <body>
 	<table border=1>
 	<tr>
 		<td>Username</td>
 		<td>User ID</td>
-		<td>Real name</td>
 		<td>Email</td>
+		<td>Real Name</td>
 		<td>Amount</td>
+
 	</tr>
 	{% for row in users %}
 	<tr>
 		{% for cell in row %}
 		<td>{{cell}}</td>
 		{% endfor %}
+
 	</tr>
 	{% endfor %}
 

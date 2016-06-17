@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Web app - Edit user</title>
+<body>
+
+	<fieldset>
+		<legend>Current user</legend>
+	<table border=1>
+	<tr>
+		<td>Username</td>
+		<td>User ID</td>
+		<td>Email</td>
+		<td>Real name</td>
+		<td>Amount</td>
+
+	</tr>
+        {% for row in user %}
+	<tr>
+		{% for cell in row %}
+		<td>{{cell}}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	</table>
+	<br>
+	</fieldset>
+	<br>
+	<form action="/App/delete_user" method="post">
+	<fieldset>
+		<legend>Delete User</legend>
+		<br>
+		<input type="submit" value="delete {{username}}" name="username">
+	</fieldset>
+	</form>
+	<form action="/App/update_user" method="post">
+	<fieldset>
+		<legend>Update User</legend>
+		Username:<br>
+		<input type="text" name="username"><br>
+		User ID:<br>
+		<input type="text" name="user_id"><br>
+		Real Name:<br>
+		<input type="text" name="real_name"><br>
+		Email:<br>
+		<input type="text" name="email"><br>
+		Amount:<br>
+		<input type="text" name="amount"><br>
+		<br><br>
+		<input type="submit" value="Update {{username}}" name="original_username">
+	</fieldset>
+	</form>
+	<br>
+	<a href="/">landing page</a>
+</body>
+</head>
+</html>
